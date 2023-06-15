@@ -11,18 +11,19 @@ export interface ScreenProps {
 export function Screen({height , width }: ScreenProps): ReactElement {
 
     return (
-        <div onLoad={animationSequence} className={style.screen}>
+        <div onLoad={reelAnimationSequence} className={style.screen}>
             {Array(width).fill(0).map((_, i) => <Reel key={`reel-${i}`} reelId={i} height={height}/>)}
         </div>
     )
 }
 
-const animationSequence = () => {
+const reelAnimationSequence = () => {
     const reels = Array(7).fill(0).map((_, i) => document.getElementById(`reel-${i}`))
     reels.forEach((reel, idx) => {
         setTimeout(() => {
+            reel.style.visibility = "visible"
             reel.classList.add(animations['slide-in-blurred-top'])
-        }, idx * 300);
+        }, idx * 200);
     })
 
     setTimeout(() => {
