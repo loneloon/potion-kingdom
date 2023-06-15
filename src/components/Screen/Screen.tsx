@@ -1,7 +1,9 @@
-import React, { ReactElement } from "react";
+import React, { ReactElement, useCallback, useEffect, useState } from "react";
 import { Reel } from "../Reel/Reel";
 import style from './Screen.less'
 import animations from '../../assets/styles/animations.less'
+import { SpinButton } from "../SpinButton/SpinButton";
+import { FetchSlotsGame, SlotsGameDto } from "../../hooks/fetch";
 
 export interface ScreenProps {
     height: number;
@@ -9,11 +11,35 @@ export interface ScreenProps {
 }
 
 export function Screen({height , width }: ScreenProps): ReactElement {
+    const [gameResultDto, setGameResultDto] = useState<SlotsGameDto | null>(null)
+
+    if (gameResultDto) {
+        hideAllReels()
+    }
+
+    const [screenLayout, matches, clusters] = gameResultDto ? parseSlotsGameDto(gameResultDto) : [{}]
+
+    if (matches) {
+        clusters.forEach((cluster, idx) => {
+            setTimeout(() => {
+            setTimeout(() => {
+                lightUpCellCluster(cluster)
+            }, idx*500);
+        }, 2500);
+        })
+    }
+
+    const handleGameRequest = useCallback(async () => {
+        return await FetchSlotsGame();
+      }, []);
 
     return (
+    <div className={style.screenWrapper}>
         <div onLoad={reelAnimationSequence} className={style.screen}>
-            {Array(width).fill(0).map((_, i) => <Reel key={`reel-${i}`} reelId={i} height={height}/>)}
+            {Array(width).fill(0).map((_, i) => <Reel key={`reel-${i}`} reelId={i} height={height} screenLayout={screenLayout}/>)}
         </div>
+        <SpinButton startGameFn={handleGameRequest} setGameResultDto={setGameResultDto}/>
+    </div>
     )
 }
 
@@ -24,7 +50,7 @@ const reelAnimationSequence = () => {
         setTimeout(() => {
             reel.style.visibility = "visible"
             reel.classList.add(animations['slide-in-blurred-top'])
-        }, idx * 200);
+        }, (idx+1) * 200);
     })
 
     setTimeout(() => {
@@ -34,9 +60,19 @@ const reelAnimationSequence = () => {
     }, 3000);
 }
 
-const lightUpCellCluster = () => {
+const hideAllReels = () => {
+    const reels = Array(7).fill(0).map((_, i) => document.getElementById(`reel-${i}`))
+    
+    reels.forEach((reel, idx) => {
+        reel.style.visibility = "hidden"
+    })
+}
 
-const cells = Array(7).fill(0).map((_, i) => document.getElementById(`cell-${i}${i}`))
+const lightUpCellCluster = (clusterCoordinatesStr: string) => {
+
+const clusterCoordinates: string[] = clusterCoordinatesStr.split(":")
+
+const cells = clusterCoordinates.map((coordinates, i) => document.getElementById(`cell-${coordinates[0]}${coordinates[1]}`))
 
 setTimeout(() => {
     cells.forEach((cell) => {
@@ -51,4 +87,8 @@ setTimeout(() => {
         cell.classList.remove(animations['flash-background-white'])
     })
 }, 1600);
+}
+
+function parseSlotsGameDto(gameDto: SlotsGameDto): [{ [key: string]: string}, boolean, string[]] {
+    return [gameDto.matrix, gameDto.matches, gameDto.clusters.map((cluster) => cluster.coordinates)]
 }

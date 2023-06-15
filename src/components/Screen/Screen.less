@@ -7,3 +7,19 @@
   justify-content: center;
   align-items: center;
 }
+
+.screenWrapper {
+  display: grid;
+  grid-template-columns: 1fr;
+  justify-content: center;
+  align-content: center;
+  align-items: center;
+}
+
+.screenWrapper >* {
+  margin-bottom: 40px;
+}
+
+.screenWrapper:last-child {
+  margin-bottom: 0;
+}

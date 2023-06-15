@@ -9,14 +9,16 @@ import aceFace from "../../assets/faces/symbol-ace.png"
 export interface CellProps {
     reelId: number;
     cellId: number;
+    symbolIdx: string;
+    symbol: string | null;
 }
 
-export function Cell({reelId, cellId}: CellProps): ReactElement {
-    let symbolIdx = Math.floor(Math.random() * 5) + 1
-
+export function Cell({reelId, cellId, symbolIdx, symbol}: CellProps): ReactElement {
+    let randomSymbolIdx = Math.floor(Math.random() * 5) + 1
+    
     return (
         <div className={style.cell} id={`cell-${reelId}${cellId}`}>
-            <img src={resolveCellFaceByIdx(symbolIdx)}/>
+            <img src={symbol ? resolveCellFaceByIdx(parseInt(symbol)) : resolveCellFaceByIdx(randomSymbolIdx)}/>
         </div>
     )
 }
