@@ -19,6 +19,7 @@ export function Screen({height , width }: ScreenProps): ReactElement {
 
 const reelAnimationSequence = () => {
     const reels = Array(7).fill(0).map((_, i) => document.getElementById(`reel-${i}`))
+    
     reels.forEach((reel, idx) => {
         setTimeout(() => {
             reel.style.visibility = "visible"
@@ -31,4 +32,23 @@ const reelAnimationSequence = () => {
             reel.classList.remove(animations['slide-in-blurred-top'])
         })
     }, 3000);
+}
+
+const lightUpCellCluster = () => {
+
+const cells = Array(7).fill(0).map((_, i) => document.getElementById(`cell-${i}${i}`))
+
+setTimeout(() => {
+    cells.forEach((cell) => {
+        cell.classList.add(animations['fade-cell-image'])
+        cell.classList.add(animations['flash-background-white'])
+    })
+}, 200);
+
+setTimeout(() => {
+    cells.forEach((cell) => {
+        cell.classList.remove(animations['fade-cell-image'])
+        cell.classList.remove(animations['flash-background-white'])
+    })
+}, 1600);
 }
