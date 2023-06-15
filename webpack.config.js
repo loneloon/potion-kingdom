@@ -1,5 +1,7 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+
 module.exports = {
     mode: 'development',
     entry: './src/index.tsx',
@@ -24,14 +26,37 @@ module.exports = {
                 use: 'ts-loader',
                 exclude: /node_modules/,
             },
+            {
+                test: /\.less$/i,
+                use: [
+                    { loader: "style-loader" },
+                    {
+                        loader: "css-loader",
+                        options: {
+                            sourceMap: true,
+                            modules: true
+                        }
+                    },
+                    { loader: "less-loader" }
+                ],
+            },
+            {
+                test: /\.(png|jpe?g|gif)$/i,
+                use: [
+                  {
+                    loader: 'file-loader',
+                  },
+                ],
+              },
         ]
     },
     resolve: {
-        extensions: ['.tsx', '.ts', '.js'],
+        extensions: ['.tsx', '.ts', '.js']
     },
     plugins: [
         new HtmlWebpackPlugin({
-            template: './public/index.html'
-        })
+            template: './src/assets/templates/index.html'
+        }),
+        new MiniCssExtractPlugin({ filename: './src/assets/styles/animations.css' })
     ]
 }
