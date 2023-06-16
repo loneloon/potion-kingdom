@@ -14,7 +14,7 @@ export interface SymbolClusterDto{
             'signature': string;
 }
 
-export async function FetchSlotsGame(): Promise<SlotsGameDto> {
+export async function FetchSlotsGame(): Promise<SlotsGameDto | null> {
     try {
         // 👇️ const response: Response
         const response = await fetch('http://127.0.0.1:8000/', {
@@ -33,7 +33,8 @@ export async function FetchSlotsGame(): Promise<SlotsGameDto> {
 
         return result;
       } catch (error) {
-        throw(error)
+        console.warn(error.message)
+        return null
       }
     }
 
