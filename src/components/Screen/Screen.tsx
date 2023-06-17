@@ -10,11 +10,12 @@ export interface ScreenProps {
     height: number;
     width: number;
     starterBalance: number;
+    defaultCurrency: string;
 }
 
 const defaultSpinCost = 100
 
-export function Screen({height , width, starterBalance }: ScreenProps): ReactElement {
+export function Screen({height , width, starterBalance, defaultCurrency }: ScreenProps): ReactElement {
     const [gameResultDto, setGameResultDto] = useState<SlotsGameDto | null>(null)
     const userBalance = useRef(starterBalance)
     const previousWin = useRef(0)
@@ -73,7 +74,7 @@ export function Screen({height , width, starterBalance }: ScreenProps): ReactEle
         <div onLoad={reelAnimationSequence} className={style.screen}>
             {Array(width).fill(0).map((_, i) => <Reel key={`reel-${i}`} reelId={i} height={height} screenLayout={screenLayout}/>)}
         </div>
-        <div style={{display: "flex",justifyContent: "center", alignItems: "center"}}><img style={{width: "2rem", height: "2rem", marginRight: "10px"}} src={monkaW}/><div className={style.userBalance} id={'userBalance'}>{userBalance.current.toFixed(2)}</div></div>
+        <div className={style.userBalanceBox}><div className={style.userBalance} id={'userBalance'}>{userBalance.current.toFixed(2)}</div><div className={style.userBalanceCurrency}>{defaultCurrency}</div></div>
         <SpinButton startGameFn={handleGameRequest} setGameResultDto={setGameResultDto}/>
     </div>
 
