@@ -6,6 +6,7 @@
     display: flex;
   justify-content: center;
   align-items: center;
+  z-index: -1;
 }
 
 .screenWrapper {
@@ -14,12 +15,37 @@
   justify-content: center;
   align-content: center;
   align-items: center;
+  position: sticky
 }
 
 .screenWrapper >* {
-  margin-bottom: 40px;
+  margin-bottom: 20px;
 }
 
 .screenWrapper:last-child {
-  margin-bottom: 0;
+  margin-bottom: 40px;
+}
+
+.screenOverlay {
+  // background-color: rgba(0,0,0,1);
+  justify-content: center;
+  align-items: center;
+  z-index: 1;
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.winText {
+  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+  font-size: 3rem;
+  color:coral;
+}
+
+.userBalance {
+  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+  font-size: 2rem;
+  color:rgb(23, 23, 23);
+  text-align: center;
 }
