@@ -2,9 +2,11 @@ import React, { ReactElement, useCallback, useState, useRef } from "react";
 import { Reel } from "../Reel/Reel";
 import style from './Screen.less'
 import animations from '../../assets/styles/animations.less'
-import { SpinButton } from "../SpinButton/SpinButton";
+import { SpinButton, playSound } from "../SpinButton/SpinButton";
 import { FetchSlotsGame, SlotsGameDto, SymbolClusterDto } from "../../hooks/fetch";
-import monkaW from '../../assets/img/monkaW.png'
+import clickSound from "../../assets/audio/click.wav"
+import reelSound from "../../assets/audio/reel-drop.mp3"
+import winSound from "../../assets/audio/win.mp3"
 
 export interface ScreenProps {
     height: number;
@@ -39,9 +41,10 @@ export function Screen({height , width, starterBalance, defaultCurrency }: Scree
             fastWinAmount += defaultSpinCost * cluster.payout_modifier
             setTimeout(() => {
             setTimeout(() => {
+                playSound('winSound')
                 slowWinAmount += defaultSpinCost * cluster.payout_modifier
                 lightUpCellCluster(cluster, slowWinAmount)
-            }, idx*500);
+            }, (idx+1)*700);
         }, 2500);
         })
 
@@ -56,7 +59,7 @@ export function Screen({height , width, starterBalance, defaultCurrency }: Scree
         setTimeout(() => {
             spinButton.disabled = false
             spinButton.innerText = "SPIN"
-        }, 4000)
+        }, 4500)
     }
 
     previousWin.current = fastWinAmount
@@ -75,6 +78,16 @@ export function Screen({height , width, starterBalance, defaultCurrency }: Scree
             {Array(width).fill(0).map((_, i) => <Reel key={`reel-${i}`} reelId={i} height={height} screenLayout={screenLayout}/>)}
         </div>
         <div className={style.controlPanel}>
+            <audio src={clickSound} id={'clickSound'} hidden/>
+            <audio src={reelSound} id={'reelSound-0'} hidden/>
+            <audio src={reelSound} id={'reelSound-1'} hidden/>
+            <audio src={reelSound} id={'reelSound-2'} hidden/>
+            <audio src={reelSound} id={'reelSound-3'} hidden/>
+            <audio src={reelSound} id={'reelSound-4'} hidden/>
+            <audio src={reelSound} id={'reelSound-5'} hidden/>
+            <audio src={reelSound} id={'reelSound-6'} hidden/>
+            <audio src={winSound} id={'winSound'} hidden/>
+
             <div className={style.userBalanceBox}><div className={style.userBalance} id={'userBalance'}>{userBalance.current.toFixed(2)}</div><div className={style.userBalanceCurrency}>{defaultCurrency}</div></div>
             <SpinButton startGameFn={handleGameRequest} setGameResultDto={setGameResultDto}/>
         </div>
@@ -88,9 +101,10 @@ const reelAnimationSequence = () => {
     
     reels.forEach((reel, idx) => {
         setTimeout(() => {
+            playSound(`reelSound-${idx}`)
             reel.style.visibility = "visible"
             reel.classList.add(animations['slide-in-blurred-top'])
-        }, (idx+1) * 200);
+        }, (idx+1) * 300);
     })
 
     setTimeout(() => {
@@ -141,3 +155,4 @@ setTimeout(() => {
 function parseSlotsGameDto(gameDto: SlotsGameDto): [{ [key: string]: string}, boolean, SymbolClusterDto[]] {
     return [gameDto.matrix, gameDto.matches, gameDto.clusters]
 }
+
