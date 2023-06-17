@@ -74,8 +74,10 @@ export function Screen({height , width, starterBalance, defaultCurrency }: Scree
         <div onLoad={reelAnimationSequence} className={style.screen}>
             {Array(width).fill(0).map((_, i) => <Reel key={`reel-${i}`} reelId={i} height={height} screenLayout={screenLayout}/>)}
         </div>
-        <div className={style.userBalanceBox}><div className={style.userBalance} id={'userBalance'}>{userBalance.current.toFixed(2)}</div><div className={style.userBalanceCurrency}>{defaultCurrency}</div></div>
-        <SpinButton startGameFn={handleGameRequest} setGameResultDto={setGameResultDto}/>
+        <div className={style.controlPanel}>
+            <div className={style.userBalanceBox}><div className={style.userBalance} id={'userBalance'}>{userBalance.current.toFixed(2)}</div><div className={style.userBalanceCurrency}>{defaultCurrency}</div></div>
+            <SpinButton startGameFn={handleGameRequest} setGameResultDto={setGameResultDto}/>
+        </div>
     </div>
 
     )
