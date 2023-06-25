@@ -1,9 +1,10 @@
 # Potion Kingdom
 
 ## Description
+
 TS React based slot game mockup. Icons and background were sourced from AI-generated images.
 
-This app renders game result based on DTOs fetched from the game provider API. 
+This app renders game result based on DTOs fetched from the game provider API.
 You can get mine [here](https://github.com/loneloon/slots-api) or create and hook up your own.
 
 ## How to run
