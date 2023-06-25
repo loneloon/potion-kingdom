@@ -1,6 +1,8 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const webpack = require('webpack')
 
+require('dotenv').config({ path: './.env' }); 
 
 module.exports = {
     mode: 'development',
@@ -52,6 +54,14 @@ module.exports = {
     plugins: [
         new HtmlWebpackPlugin({
             template: './src/assets/templates/index.html'
-        })
+        }),
+        new webpack.DefinePlugin({
+            'process.env.SCREEN_HEIGHT_IN_CELLS': JSON.stringify(process.env.SCREEN_HEIGHT_IN_CELLS),
+            'process.env.SCREEN_WIDTH_IN_CELLS': JSON.stringify(process.env.SCREEN_WIDTH_IN_CELLS),
+            'process.env.STARTER_BALANCE': JSON.stringify(process.env.STARTER_BALANCE),
+            'process.env.DEFAULT_SPIN_COST': JSON.stringify(process.env.DEFAULT_SPIN_COST),
+            'process.env.DEFAULT_CURRENCY': JSON.stringify(process.env.DEFAULT_CURRENCY),
+            'process.env.GAME_PROVIDER_API_URL': JSON.stringify(process.env.GAME_PROVIDER_API_URL)
+          }),
     ]
 }

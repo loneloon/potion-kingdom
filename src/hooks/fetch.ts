@@ -14,10 +14,10 @@ export interface SymbolClusterDto{
             'signature': string;
 }
 
-export async function FetchSlotsGame(): Promise<SlotsGameDto | null> {
+export async function FetchSlotsGame(gameProviderApiUrl: string): Promise<SlotsGameDto | null> {
     try {
         // 👇️ const response: Response
-        const response = await fetch('http://127.0.0.1:8000/', {
+        const response = await fetch(gameProviderApiUrl, {
           method: 'GET',
           headers: {
             Accept: 'application/json',

@@ -9,15 +9,15 @@ import reelSound from "../../assets/audio/reel-drop.mp3"
 import winSound from "../../assets/audio/win.mp3"
 
 export interface ScreenProps {
+    gameProviderApiUrl: string;
     height: number;
     width: number;
     starterBalance: number;
+    defaultSpinCost: number;
     defaultCurrency: string;
 }
 
-const defaultSpinCost = 100
-
-export function Screen({height , width, starterBalance, defaultCurrency }: ScreenProps): ReactElement {
+export function Screen({gameProviderApiUrl, height , width, starterBalance, defaultSpinCost, defaultCurrency }: ScreenProps): ReactElement {
     const [gameResultDto, setGameResultDto] = useState<SlotsGameDto | null>(null)
     const userBalance = useRef(starterBalance)
     const previousWin = useRef(0)
@@ -65,7 +65,7 @@ export function Screen({height , width, starterBalance, defaultCurrency }: Scree
     previousWin.current = fastWinAmount
 
     const handleGameRequest = useCallback(async () => {
-        return await FetchSlotsGame();
+        return await FetchSlotsGame(gameProviderApiUrl);
       }, []);
 
     return (
