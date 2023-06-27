@@ -16,7 +16,6 @@ export async function FetchSlotsGame(
   gameProviderApiUrl: string
 ): Promise<SlotsGameDto | null> {
   try {
-    // 👇️ const response: Response
     const response = await fetch(gameProviderApiUrl, {
       method: "GET",
       headers: {
@@ -28,7 +27,6 @@ export async function FetchSlotsGame(
       throw new Error(`Error! status: ${response.status}`);
     }
 
-    // 👇️ const result: GetUsersResponse
     const result = (await response.json()) as SlotsGameDto;
 
     return result;
